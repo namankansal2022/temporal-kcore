@@ -1,0 +1,19 @@
+# build artifacts
+/build/
+*.o
+*.a
+*.so
+*.log
+
+# python
+__pycache__/
+*.pyc
+
+# large / downloaded datasets (keep only small samples in data/)
+data/*.tedges
+!data/sample_small.tedges
+*.txt.gz
+CollegeMsg.txt
+email-Eu-core-temporal.txt
+sx-*.txt
+wiki-talk-temporal.txt
