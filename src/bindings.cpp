@@ -13,8 +13,10 @@
 #include "tkcore/loader.hpp"
 #include "tkcore/statistics.hpp"
 #include "tkcore/kcore.hpp"
+#include "tkcore/dense_core.hpp"
 
 #include <map>
+#include <vector>
 
 namespace py = pybind11;
 using namespace tkcore;
@@ -80,4 +82,14 @@ PYBIND11_MODULE(pytkcore, m) {
           [](const TemporalGraph& g) { return core_numbers_by_external_id(g, true); },
           py::arg("graph"),
           "Reference core numbers (slow, for validation).");
+
+    m.def("dense_core",
+          [](const TemporalGraph& g, int l, double delta) {
+              auto ids = dense_core(g, l, delta);
+              std::vector<std::int64_t> out; out.reserve(ids.size());
+              for (NodeId v : ids) out.push_back(g.external_id(v));
+              return out;
+          },
+          py::arg("graph"), py::arg("l"), py::arg("delta"),
+          "(l, delta)-maximal dense core: node ids in the bursting core.");
 }
