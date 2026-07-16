@@ -161,7 +161,7 @@ benchmarking study is:
 5. **CSV/plot output** for the poster/summary.
 
 
-## Algorithms implemented (beyond Week 1)
+## 7. Algorithms implemented (beyond Week 1)
 
 After the Week 1 setup, the project was extended into a full library of temporal
 k-core decompositions. Every algorithm was implemented in C++ from the source
@@ -206,7 +206,7 @@ relaxes the joint-connectivity requirement and is the tractable counterpart.
 All of the above are covered by the test suite (`ctest` runs 7 suites) and by the
 full benchmark below.
 
-## Benchmark results and interpretation
+## 8. Benchmark results and interpretation
 
 All nine algorithms were run on the CollegeMsg temporal network. Degree/peeling
 cores use raw timestamps; snapshot-based cores (dense, stable, span, persistent)
