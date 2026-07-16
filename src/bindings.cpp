@@ -14,6 +14,7 @@
 #include "tkcore/statistics.hpp"
 #include "tkcore/kcore.hpp"
 #include "tkcore/dense_core.hpp"
+#include "tkcore/stable_core.hpp"
 
 #include <map>
 #include <vector>
@@ -92,4 +93,27 @@ PYBIND11_MODULE(pytkcore, m) {
           },
           py::arg("graph"), py::arg("l"), py::arg("delta"),
           "(l, delta)-maximal dense core: node ids in the bursting core.");
+
+    m.def("stable_core_nodes",
+          [](const TemporalGraph& g, int mu, int tau, double eps) {
+              auto R = stable_cores(g, mu, tau, eps);
+              std::vector<std::int64_t> out;
+              for (NodeId v = 0; v < g.num_nodes(); ++v)
+                  if (R.is_core[v]) out.push_back(g.external_id(v));
+              return out;
+          },
+          py::arg("graph"), py::arg("mu"), py::arg("tau"), py::arg("eps"),
+          "(mu,tau,eps)-stable core node ids.");
+
+    m.def("stable_communities",
+          [](const TemporalGraph& g, int mu, int tau, double eps) {
+              auto R = stable_cores(g, mu, tau, eps);
+              std::map<std::int64_t, std::int64_t> out;
+              for (NodeId v = 0; v < g.num_nodes(); ++v)
+                  if (R.community[v] != -1)
+                      out[g.external_id(v)] = g.external_id((NodeId)R.community[v]);
+              return out;
+          },
+          py::arg("graph"), py::arg("mu"), py::arg("tau"), py::arg("eps"),
+          "(mu,tau,eps)-stable communities: {node: community representative}.");
 }
