@@ -16,6 +16,7 @@
 #include "tkcore/dense_core.hpp"
 #include "tkcore/stable_core.hpp"
 #include "tkcore/filtered_core.hpp"
+#include "tkcore/span_core.hpp"
 
 #include <map>
 #include <vector>
@@ -145,4 +146,17 @@ PYBIND11_MODULE(pytkcore, m) {
           },
           py::arg("graph"), py::arg("ts"), py::arg("te"),
           "Time-window / historical k-core numbers {node: core}.");
+
+    m.def("num_snapshots", [](const TemporalGraph& g) { return num_snapshots(g); },
+          py::arg("graph"), "Number of snapshots (distinct timestamps).");
+
+    m.def("span_core_numbers",
+          [](const TemporalGraph& g, int a, int b) {
+              auto c = span_core_numbers(g, a, b);
+              std::map<std::int64_t, std::int64_t> out;
+              for (NodeId v = 0; v < g.num_nodes(); ++v) out[g.external_id(v)] = c[v];
+              return out;
+          },
+          py::arg("graph"), py::arg("a"), py::arg("b"),
+          "(k,[a,b])-span-core numbers {node: core} over snapshot indices a..b.");
 }
