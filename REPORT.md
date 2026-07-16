@@ -158,6 +158,51 @@ reference) are exactly the axes the benchmarking study will need.
 GitHub repo.
 
 
+## Algorithms implemented (beyond Week 1)
+
+After the Week 1 setup, the project was extended into a full library of temporal
+k-core decompositions. Every algorithm was implemented in C++ from the source
+paper's definition, exposed to Python via pybind11, and validated against an
+independent reference implementation using randomized fuzz testing (thousands of
+random temporal graphs per algorithm), plus worked examples from the papers
+where available.
+
+**The peeling family (shared engine).** Static k-core, (k,h)-core, and
+time-window / historical k-core are all the same simple-graph k-core peeling
+applied to a different filtered edge set (all pairs / multiplicity ≥ h / edges
+within a window). Validated against a naive min-degree-removal reference.
+
+**Span-core (Galimberti et al. 2021).** The (k,Δ)-span-core is the k-core of the
+"intersection graph" — edges present in *every* snapshot of the span. Reference
+builds the intersection by iterative snapshot intersection.
+
+**(l,δ)-dense / bursting core (Qin et al. 2022).** A node is (l,δ)-dense if its
+average degree over some run of ≥ l consecutive snapshots is ≥ δ. The O(n)
+maximum-l-segment-density kernel (convex-hull sweep) matches an O(n²) reference
+and the paper's worked values over 100k+ trials.
+
+**(µ,τ,ε)-stable core (Qin et al. 2020).** Temporal SCAN: per-snapshot
+structural (cosine) similarity, stable similarity over ≥ τ snapshots, cores with
+≥ µ stably-similar neighbours, then union-find clustering. Matched a set-based
+reference on cores and community partitions.
+
+**(η,k)-pseudocore (Oettershagen, Kriege & Mutzel 2023).** The n-th order
+temporal H-index (a reachability-aware H-index recursion); the (n,k)-pseudocore
+thresholds it at k. The memoised recursion matches a literal tree-expansion of
+the definition, and h⁽⁰⁾ equals the temporal degree as expected.
+
+**(θ,τ)-persistent k-core (Li et al. 2018).** Implemented as the *polynomial
+per-vertex decomposition*: slide a length-θ window, take per-window k-core
+membership, and aggregate persistence via the paper's F(θ,k) function; the
+(θ,τ)-persistent core thresholds F at τ. This reproduces the paper's worked value
+(F = 4 for the [1,5] example). **Scope:** the original *persistent community
+search* — finding the single *largest* (θ,τ)-persistent k-core — is NP-hard and
+is deliberately out of scope (it needs branch-and-bound); the decomposition here
+relaxes the joint-connectivity requirement and is the tractable counterpart.
+
+All of the above are covered by the test suite (`ctest` runs 7 suites) and by the
+full benchmark below.
+
 ## Benchmark results and interpretation
 
 All nine algorithms were run on the CollegeMsg temporal network. Degree/peeling

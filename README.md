@@ -1,89 +1,76 @@
-# Temporal k-Core — Benchmarking Toolkit (Week 1)
+# Temporal k-Core — Benchmarking Toolkit
 
 A C++ library (with Python bindings) for loading temporal graphs, computing
-basic statistics, and computing **temporal-degree k-core** numbers in linear
-time. This is the foundation for benchmarking temporal k-core algorithms on
-[Stanford SNAP](https://snap.stanford.edu/data/index.html#temporal) temporal
-datasets.
+basic statistics, and computing a family of **temporal k-core decompositions**,
+plus a benchmark harness that runs them all on
+[Stanford SNAP](https://snap.stanford.edu/data/index.html#temporal) datasets.
+Every algorithm ships with an independent reference implementation and is
+fuzz-tested against it.
 
-## What's implemented (this week's TODOs)
+## Algorithms implemented
 
-1. **C++ environment + Python bindings + CMake** — a `tkcore` static library,
-   a `tkcore_benchmark` CLI, a test binary, and a `pytkcore` Python module
-   built with pybind11, all driven by CMake.
-2. **Temporal graph loader + basic statistics** — reads SNAP-style
-   `src dst timestamp` edge lists and reports number of nodes, temporal edges,
-   distinct static edges, distinct timestamps, time span, and temporal-degree
-   summary.
-3. **Linear-time k-core with temporal degree** — Batagelj–Zaveršnik bin-sort
-   peeling, `O(|V| + |E|)`, where the degree of a node is the number of
-   temporal edges incident to it (parallel edges counted with multiplicity).
-   Validated against an independent reference implementation.
+| Algorithm | Idea | Source |
+|---|---|---|
+| temporal-degree k-core | k-core using multi-edge (temporal) degree | Batagelj & Zaveršnik 2003 |
+| static k-core | k-core on the de-temporalised simple graph | Seidman 1983 |
+| (k,h)-core | keep pairs interacting ≥ h times, then k-core | Wu et al. 2015 |
+| time-window / historical k-core | k-core over edges in a time window | Yu 2021 / Yang 2023 |
+| span-core | k-core of the intersection graph over a span | Galimberti et al. 2021 |
+| (l,δ)-dense / bursting core | avg degree ≥ δ over ≥ l consecutive snapshots | Qin et al. 2022 |
+| (µ,τ,ε)-stable core | temporal SCAN structural clustering | Qin et al. 2020 |
+| (η,k)-pseudocore | n-th order temporal H-index | Oettershagen et al. 2023 |
+| (θ,τ)-persistent k-core | polynomial persistence decomposition* | Li et al. 2018 |
+
+\* polynomial per-vertex decomposition; the NP-hard *largest*-persistent-core
+community search is out of scope (see `REPORT.md`).
 
 ## Layout
-
-```
-include/tkcore/   public headers (temporal_graph, loader, statistics, kcore)
+include/tkcore/   headers: temporal_graph, loader, statistics, kcore,
+dense_core, stable_core, filtered_core (static/(k,h)/window),
+span_core, pseudocore, persistent_core
 src/              implementations + pybind11 bindings
 apps/             tkcore_benchmark CLI
-tests/            correctness + randomized fuzz tests
-python/           example.py, generate_synthetic.py
+tests/            7 fuzz/correctness test suites (test_kcore, test_dense,
+test_stable, test_filtered, test_span, test_pseudo, test_persistent)
+python/           analyze.py, benchmark_all.py, example.py, generate_synthetic.py
 data/             sample_small.tedges (synthetic smoke-test input)
-```
+BENCHMARKS.md     latest benchmark results on CollegeMsg
 
 ## Build
 
-Requirements: a C++17 compiler, CMake ≥ 3.15, and (for the Python module)
-`pip install pybind11`.
+Requirements: a C++17 compiler, CMake ≥ 3.15, and `pip install pybind11`.
 
 ```bash
 cmake -S . -B build -Dpybind11_DIR=$(python -m pybind11 --cmakedir)
 cmake --build build -j
+ctest --test-dir build          # runs all 7 test suites
 ```
-
-The Python module is optional: if pybind11 is not found, the C++ library, CLI,
-and tests still build.
 
 ## Run
 
 ```bash
-# tests (unit + fuzz: fast algorithm vs. reference)
-./build/test_kcore
-ctest --test-dir build
+# get a real dataset
+curl -L -o data/CollegeMsg.txt.gz https://snap.stanford.edu/data/CollegeMsg.txt.gz
+gunzip -f data/CollegeMsg.txt.gz
 
-# benchmark on a dataset, with correctness validation
-./build/tkcore_benchmark data/sample_small.tedges --validate
+# full benchmark across all algorithms (writes BENCHMARKS.md)
+PYTHONPATH=build python python/benchmark_all.py data/CollegeMsg.txt 86400
 
-# Python
-PYTHONPATH=build python python/example.py data/sample_small.tedges
+# single-dataset analysis (stats, k-core, daily-binned dense core)
+PYTHONPATH=build python python/analyze.py data/CollegeMsg.txt
 ```
 
-## Getting real data (SNAP)
+## Python API (module `pytkcore`)
 
-Download any temporal edge list from SNAP and unzip it, e.g. CollegeMsg
-(~1.9K nodes / ~60K temporal edges) as a small starting point, scaling up to
-`sx-*` and `wiki-talk-temporal` (millions). Files are already in the expected
-`src dst timestamp` format:
+`load`, `statistics`, `core_numbers`, `static_core_numbers`, `kh_core_numbers`,
+`window_core_numbers`, `num_snapshots`, `span_core_numbers`, `dense_core`,
+`stable_core_nodes`, `stable_communities`, `temporal_h_index`, `pseudocore`,
+`persistence_values`, `persistent_core`.
 
-```bash
-# example
-wget https://snap.stanford.edu/data/CollegeMsg.txt.gz
-gunzip CollegeMsg.txt.gz
-./build/tkcore_benchmark CollegeMsg.txt --validate
-```
+## Notes on modelling
 
-If you don't have data yet, generate a synthetic file of any size:
-
-```bash
-python python/generate_synthetic.py --nodes 100000 --edges 2000000 \
-    --out data/synth_2M.tedges
-```
-
-## Notes on the degree model
-
-The core number here is with respect to the **temporal (multi-edge) degree**:
-a node joined to a neighbour by three temporal edges gets +3 to its degree.
-This is deliberately distinct from the static simple-graph k-core and from the
-`(k,h)`-core, and is the natural first temporal baseline. Later variants
-(`(k,h)`, span-core, `(k,∆)`, …) will be added as additional algorithms to
-benchmark against this one.
+- Degree-based cores use raw timestamps; snapshot-based cores (dense, stable,
+  span, persistent) treat each distinct timestamp as a snapshot, so on
+  per-second data you bin time first (the Python scripts do this).
+- Each algorithm is validated against an independent reference implementation
+  via randomized fuzz testing.
