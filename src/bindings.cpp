@@ -17,6 +17,7 @@
 #include "tkcore/stable_core.hpp"
 #include "tkcore/filtered_core.hpp"
 #include "tkcore/span_core.hpp"
+#include "tkcore/pseudocore.hpp"
 
 #include <map>
 #include <vector>
@@ -159,4 +160,23 @@ PYBIND11_MODULE(pytkcore, m) {
           },
           py::arg("graph"), py::arg("a"), py::arg("b"),
           "(k,[a,b])-span-core numbers {node: core} over snapshot indices a..b.");
+
+    m.def("temporal_h_index",
+          [](const TemporalGraph& g, int n) {
+              auto h = temporal_h_index(g, n);
+              std::map<std::int64_t, std::int64_t> out;
+              for (NodeId v = 0; v < g.num_nodes(); ++v) out[g.external_id(v)] = h[v];
+              return out;
+          },
+          py::arg("graph"), py::arg("n"), "n-th order temporal H-index {node: value}.");
+
+    m.def("pseudocore",
+          [](const TemporalGraph& g, int n, int k) {
+              auto ids = pseudocore(g, n, k);
+              std::vector<std::int64_t> out; out.reserve(ids.size());
+              for (NodeId v : ids) out.push_back(g.external_id(v));
+              return out;
+          },
+          py::arg("graph"), py::arg("n"), py::arg("k"),
+          "(n,k)-pseudocore node ids (h^(n)_v >= k).");
 }
