@@ -18,6 +18,7 @@
 #include "tkcore/filtered_core.hpp"
 #include "tkcore/span_core.hpp"
 #include "tkcore/pseudocore.hpp"
+#include "tkcore/persistent_core.hpp"
 
 #include <map>
 #include <vector>
@@ -179,4 +180,24 @@ PYBIND11_MODULE(pytkcore, m) {
           },
           py::arg("graph"), py::arg("n"), py::arg("k"),
           "(n,k)-pseudocore node ids (h^(n)_v >= k).");
+
+    m.def("persistence_values",
+          [](const TemporalGraph& g, int theta, int k) {
+              auto p = persistence_values(g, theta, k);
+              std::map<std::int64_t, std::int64_t> out;
+              for (NodeId v = 0; v < g.num_nodes(); ++v) out[g.external_id(v)] = p[v];
+              return out;
+          },
+          py::arg("graph"), py::arg("theta"), py::arg("k"),
+          "Per-vertex persistence F(theta,k) {node: value}.");
+
+    m.def("persistent_core",
+          [](const TemporalGraph& g, int theta, int k, long long tau) {
+              auto ids = persistent_core(g, theta, k, tau);
+              std::vector<std::int64_t> out; out.reserve(ids.size());
+              for (NodeId v : ids) out.push_back(g.external_id(v));
+              return out;
+          },
+          py::arg("graph"), py::arg("theta"), py::arg("k"), py::arg("tau"),
+          "(theta,tau)-persistent k-core node ids (polynomial decomposition).");
 }
