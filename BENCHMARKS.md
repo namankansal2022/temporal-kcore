@@ -4,11 +4,12 @@
 
 | Algorithm | Result | Time (ms) |
 |---|---|---:|
-| temporal-degree k-core | max core = 197 | 0.7 |
-| static k-core | max core = 20 | 1.6 |
-| (k,h)-core, h=2 | max core = 14 | 1.3 |
-| time-window k-core (mid 50%) | max core = 8 | 0.5 |
-| span-core [0,4] | max core = 0 | 3.4 |
-| (l,delta)-dense, l=3 delta=3 | 401 nodes | 13.1 |
-| (mu,tau,eps)-stable, 3/2/0.3 | 767 cores | 13.1 |
-| (n,k)-pseudocore, n=8 | max h = 57; 908 nodes @ k=10 | 7324.6 |
+| temporal-degree k-core | max core = 197 | 0.8 |
+| static k-core | max core = 20 | 1.9 |
+| (k,h)-core, h=2 | max core = 14 | 1.4 |
+| time-window k-core (mid 50%) | max core = 8 | 0.6 |
+| span-core [0,4] | max core = 0 | 3.5 |
+| (l,delta)-dense, l=3 delta=3 | 401 nodes | 14.4 |
+| (mu,tau,eps)-stable, 3/2/0.3 | 767 cores | 14.1 |
+| (n,k)-pseudocore, n=8 | max h = 57; 908 nodes @ k=10 | 7752.6 |
+| (theta,tau)-persistent, 3/3/5 | 879 nodes | 8.1 |

@@ -4,7 +4,7 @@
 Usage: PYTHONPATH=build python python/benchmark_all.py <edgelist> [bin_seconds]
 
 Raw timestamps drive the degree/peeling cores; a binned graph (default 1 day)
-drives the snapshot-based cores (dense, stable, span). Output is Markdown.
+drives the snapshot-based cores (dense, stable, span, persistent). Output is Markdown.
 """
 import sys, time, pytkcore
 
@@ -43,6 +43,7 @@ def main():
     h,ms=timed(lambda: pytkcore.temporal_h_index(g,8))
     size=sum(1 for v in h.values() if v>=10)
     rows.append(("(n,k)-pseudocore, n=8","max h = %d; %d nodes @ k=10"%(maxval(h),size),ms))
+    r,ms=timed(lambda: pytkcore.persistent_core(gb,3,3,5));   rows.append(("(theta,tau)-persistent, 3/3/5","%d nodes"%len(r),ms))
 
     print("# Benchmark results\n")
     print(f"**Dataset:** `{path}` — {s.num_nodes} nodes, {s.num_temporal_edges} temporal edges, "
