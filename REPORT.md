@@ -1,9 +1,11 @@
-# Progress Report — Week 1
+# Progress Report — Benchmarking Temporal k-Core Algorithms
 
-**Project:** Benchmarking Temporal k-Core Algorithms
-**Focus this week:** set up the C++/Python toolchain, implement a temporal graph
-loader with basic statistics, and implement a linear-time k-core using the
-temporal degree.
+**Project:** Benchmarking Temporal k-Core Algorithms.
+**Scope of this report:** the Week 1 setup (toolchain, loader + statistics,
+linear-time temporal-degree k-core), followed by the full library of temporal
+k-core algorithms, their validation, and a benchmark across all of them.
+Sections 1–6 document the Week 1 foundation; the later sections cover the
+complete algorithm set and benchmark.
 
 ---
 
@@ -99,7 +101,7 @@ accuracy against.
 
 ---
 
-## 4. Benchmark results so far
+## 4. Base k-core scaling test (synthetic)
 
 Machine used for these numbers is the dev container; absolute times will differ
 on other hardware, but the **scaling trend** is the point. Synthetic inputs,
