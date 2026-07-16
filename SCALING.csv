@@ -1,0 +1,46 @@
+dataset,nodes,edges,algorithm,result,status,time_ms,peak_mb
+CollegeMsg.txt,1899,59835,temporal_kcore,max core = 197,ok,0.5343329976312816,24.640625
+CollegeMsg.txt,1899,59835,static_kcore,max core = 20,ok,1.3359999866224825,25.0625
+CollegeMsg.txt,1899,59835,kh_core,max core = 14,ok,1.0946670081466436,25.25
+CollegeMsg.txt,1899,59835,window_core,max core = 8,ok,0.4896660102531314,24.671875
+CollegeMsg.txt,1899,59835,span_core,max core = 0,ok,2.8472080011852086,36.078125
+CollegeMsg.txt,1899,59835,dense_core,401 nodes,ok,11.32641703588888,36.421875
+CollegeMsg.txt,1899,59835,stable_core,767 cores,ok,12.04754097852856,39.515625
+CollegeMsg.txt,1899,59835,pseudocore,max h = 57,ok,7340.151541982777,86.703125
+CollegeMsg.txt,1899,59835,persistent_core,879 nodes,ok,7.596499985083938,36.25
+email-Eu-core-temporal.txt,986,332334,temporal_kcore,max core = 4992,ok,1.596250047441572,43.046875
+email-Eu-core-temporal.txt,986,332334,static_kcore,max core = 34,ok,1.9873339915648103,43.859375
+email-Eu-core-temporal.txt,986,332334,kh_core,max core = 26,ok,1.9837919971905649,43.609375
+email-Eu-core-temporal.txt,986,332334,window_core,max core = 28,ok,1.5878330450505018,43.71875
+email-Eu-core-temporal.txt,986,332334,span_core,max core = 1,ok,10.045542032457888,102.609375
+email-Eu-core-temporal.txt,986,332334,dense_core,428 nodes,ok,44.3149579805322,108.203125
+email-Eu-core-temporal.txt,986,332334,stable_core,754 cores,ok,83.25312501983717,124.9375
+email-Eu-core-temporal.txt,0,0,pseudocore,,timeout,300000,0
+email-Eu-core-temporal.txt,986,332334,persistent_core,676 nodes,ok,41.85920796589926,110.640625
+sx-mathoverflow.txt,24818,506550,temporal_kcore,max core = 3888,ok,6.666207977104932,58.46875
+sx-mathoverflow.txt,24818,506550,static_kcore,max core = 78,ok,16.39854203676805,65.71875
+sx-mathoverflow.txt,24818,506550,kh_core,max core = 48,ok,14.48908296879381,65.1875
+sx-mathoverflow.txt,24818,506550,window_core,max core = 47,ok,10.675375000573695,62.59375
+sx-mathoverflow.txt,24818,506550,span_core,max core = 0,ok,36.39724996173754,165.609375
+sx-mathoverflow.txt,24818,506550,dense_core,1652 nodes,ok,1564.8446250124834,167.703125
+sx-mathoverflow.txt,24818,506550,stable_core,3892 cores,ok,209.18620901647955,218.203125
+sx-mathoverflow.txt,0,0,pseudocore,,timeout,300000,0
+sx-mathoverflow.txt,24818,506550,persistent_core,3377 nodes,ok,389.78966599097475,171.640625
+sx-askubuntu.txt,159316,964437,temporal_kcore,max core = 3128,ok,32.96787501312792,112.421875
+sx-askubuntu.txt,159316,964437,static_kcore,max core = 48,ok,70.47600002260879,129.71875
+sx-askubuntu.txt,159316,964437,kh_core,max core = 29,ok,60.240874998271465,126.65625
+sx-askubuntu.txt,159316,964437,window_core,max core = 40,ok,51.58775002928451,122.25
+sx-askubuntu.txt,159316,964437,span_core,max core = 0,ok,132.50529096694663,334.640625
+sx-askubuntu.txt,159316,964437,dense_core,802 nodes,ok,3759.6685000462458,332.75
+sx-askubuntu.txt,159316,964437,stable_core,6366 cores,ok,468.3532920316793,432.90625
+sx-askubuntu.txt,0,0,pseudocore,,timeout,300000,0
+sx-askubuntu.txt,159316,964437,persistent_core,10167 nodes,ok,1864.350541960448,332.359375
+sx-superuser.txt,194085,1443339,temporal_kcore,max core = 7252,ok,45.04791699582711,156.5625
+sx-superuser.txt,194085,1443339,static_kcore,max core = 61,ok,111.76395800430328,186.796875
+sx-superuser.txt,194085,1443339,kh_core,max core = 36,ok,94.24162498908117,183.703125
+sx-superuser.txt,194085,1443339,window_core,max core = 50,ok,76.1765000061132,175.90625
+sx-superuser.txt,194085,1443339,span_core,max core = 0,ok,224.15341599844396,491.8125
+sx-superuser.txt,194085,1443339,dense_core,1824 nodes,ok,8192.388875002507,491.46875
+sx-superuser.txt,194085,1443339,stable_core,10593 cores,ok,879.7857500030659,648.59375
+sx-superuser.txt,0,0,pseudocore,,timeout,300000,0
+sx-superuser.txt,194085,1443339,persistent_core,17769 nodes,ok,2917.178125004284,473.328125
