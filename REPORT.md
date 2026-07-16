@@ -145,19 +145,20 @@ reference) are exactly the axes the benchmarking study will need.
 
 ## 6. Next steps (proposed)
 
-1. Run on **real SNAP data**, starting with CollegeMsg (~60 K temporal edges),
-   then email-Eu-core-temporal, then scale toward the `sx-*` and
-   `wiki-talk-temporal` millions-scale datasets.
-2. Add the **static simple-graph k-core** as a second baseline (distinct from
-   the multigraph version) so the benchmark has more than one reference point.
-3. Begin implementing the first "real" temporal variant — most likely the
-   `(k,h)`-core (H. Wu et al., 2015), since it reduces to static core
-   decomposition on filtered graphs and is a clean next step.
-4. Add CSV output to the benchmark so results can be plotted for the
-   poster/summary.
+The Week 1 plan (run on real SNAP data, add the static k-core baseline, implement
+the (k,h)-core) has since been completed, along with the rest of the algorithm
+set -- see the sections below. The remaining work to turn this into a full
+benchmarking study is:
 
-**Repository:** all code, tests, build instructions, and this report are in the
-GitHub repo.
+1. **Per-algorithm memory measurement** (peak RSS), not just runtime.
+2. **Scaling across dataset sizes** -- run on progressively larger SNAP datasets
+   (email-Eu-core-temporal, `sx-*`, `wiki-talk-temporal`) and plot runtime /
+   memory vs. #nodes, #edges, #timestamps.
+3. **Time-resolution sensitivity** -- vary the binning granularity for the
+   snapshot-based cores.
+4. **Parameter sweeps** -- vary k, h, delta, theta, tau, eps, n rather than a
+   single setting.
+5. **CSV/plot output** for the poster/summary.
 
 
 ## Algorithms implemented (beyond Week 1)
