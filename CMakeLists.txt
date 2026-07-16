@@ -19,6 +19,7 @@ add_library(tkcore
   src/kcore.cpp
   src/dense_core.cpp
   src/stable_core.cpp
+  src/filtered_core.cpp
 )
 target_include_directories(tkcore PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 # needed so the static library can be linked into the pybind11 shared module
@@ -45,6 +46,10 @@ add_test(NAME test_dense COMMAND test_dense)
 add_executable(test_stable tests/test_stable.cpp)
 target_link_libraries(test_stable PRIVATE tkcore)
 add_test(NAME test_stable COMMAND test_stable)
+
+add_executable(test_filtered tests/test_filtered.cpp)
+target_link_libraries(test_filtered PRIVATE tkcore)
+add_test(NAME test_filtered COMMAND test_filtered)
 
 # ---------------------------------------------------------------------------
 # Python module (pybind11).  Optional: only built if pybind11 is found.

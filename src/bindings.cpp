@@ -15,6 +15,7 @@
 #include "tkcore/kcore.hpp"
 #include "tkcore/dense_core.hpp"
 #include "tkcore/stable_core.hpp"
+#include "tkcore/filtered_core.hpp"
 
 #include <map>
 #include <vector>
@@ -116,4 +117,32 @@ PYBIND11_MODULE(pytkcore, m) {
           },
           py::arg("graph"), py::arg("mu"), py::arg("tau"), py::arg("eps"),
           "(mu,tau,eps)-stable communities: {node: community representative}.");
+
+    m.def("static_core_numbers",
+          [](const TemporalGraph& g) {
+              auto c = static_core_numbers(g);
+              std::map<std::int64_t, std::int64_t> out;
+              for (NodeId v = 0; v < g.num_nodes(); ++v) out[g.external_id(v)] = c[v];
+              return out;
+          },
+          py::arg("graph"), "Static de-temporalized k-core numbers {node: core}.");
+
+    m.def("kh_core_numbers",
+          [](const TemporalGraph& g, int h) {
+              auto c = kh_core_numbers(g, h);
+              std::map<std::int64_t, std::int64_t> out;
+              for (NodeId v = 0; v < g.num_nodes(); ++v) out[g.external_id(v)] = c[v];
+              return out;
+          },
+          py::arg("graph"), py::arg("h"), "(k,h)-core numbers {node: core} for given h.");
+
+    m.def("window_core_numbers",
+          [](const TemporalGraph& g, std::int64_t ts, std::int64_t te) {
+              auto c = window_core_numbers(g, (Timestamp)ts, (Timestamp)te);
+              std::map<std::int64_t, std::int64_t> out;
+              for (NodeId v = 0; v < g.num_nodes(); ++v) out[g.external_id(v)] = c[v];
+              return out;
+          },
+          py::arg("graph"), py::arg("ts"), py::arg("te"),
+          "Time-window / historical k-core numbers {node: core}.");
 }
