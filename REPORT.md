@@ -316,11 +316,12 @@ its own subprocess with a 300 s timeout and peak-memory measurement (see
 
 **Findings.**
 
-- *Eight of nine algorithms scale to millions of edges.* The peeling family
+- *Eight of nine algorithms successfully complete on all datasets evaluated in this section (up to 1.4M edges).* The peeling family
   (temporal-degree, static, (k,h), time-window) finishes in tens of milliseconds
   at 1.4M edges with linear memory; span-core, (l,delta)-dense,
-  (mu,tau,eps)-stable and (theta,tau)-persistent also complete at every size
-  (dense is the slowest, ~8 s at 1.4M; stable is the heaviest, ~650 MB).
+  (mu,tau,eps)-stable and (theta,tau)-persistent also complete at every dataset
+  evaluated here (dense is the slowest, ~8 s at 1.4M; stable is the heaviest,
+  ~650 MB).
 
 - *The recursive (eta,k)-pseudocore does not scale.* It completes on CollegeMsg
   (~7 s) but times out (>300 s) on every dataset from 332K edges upward.
