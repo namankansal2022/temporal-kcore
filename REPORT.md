@@ -425,3 +425,51 @@ These experiments complete the scalability evaluation requested for the project
 and provide a comprehensive comparison of runtime and memory behaviour across
 multiple temporal k-core formulations.
 
+
+---
+
+# 11. Temporal Resolution Benchmark
+
+To evaluate the impact of temporal granularity, the snapshot-based algorithms
+were benchmarked using multiple temporal aggregation intervals on the
+**CollegeMsg** dataset.
+
+The evaluated temporal resolutions were:
+
+- 1 hour
+- 6 hours
+- 12 hours
+- 1 day
+- 7 days
+
+For each resolution, the benchmark recorded:
+
+- Runtime
+- Peak memory usage
+- Number of generated snapshots
+
+## Key Observations
+
+- Finer temporal resolutions generate significantly more snapshots, increasing
+  computational cost.
+
+- Runtime decreases consistently as the temporal aggregation interval becomes
+  larger.
+
+- Peak memory usage remains relatively stable because each snapshot is processed
+  independently.
+
+- Dense Core and Persistent Core show the greatest runtime improvement as the
+  number of snapshots decreases.
+
+- The output of Dense Core also changes with temporal resolution. At very fine
+  resolutions (1 hour and 6 hours), no sufficiently dense temporal structures
+  are detected, whereas coarser aggregations reveal increasingly dense
+  communities. This demonstrates that temporal resolution influences not only
+  computational performance but also the structural properties discovered by
+  temporal graph mining algorithms.
+
+Overall, these experiments demonstrate that temporal resolution is an important
+parameter affecting both efficiency and the quality of the extracted temporal
+structures.
+
