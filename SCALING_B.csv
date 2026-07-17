@@ -1,0 +1,17 @@
+dataset,nodes,edges,algorithm,result,status,time_ms,peak_mb
+wiki-talk-temporal.txt,1140149,7833140,temporal_kcore,max core = 62900,ok,200.59229101752862,701.140625
+wiki-talk-temporal.txt,1140149,7833140,static_kcore,max core = 124,ok,445.7330420264043,814.1875
+wiki-talk-temporal.txt,1140149,7833140,kh_core,max core = 77,ok,374.09062503138557,783.90625
+wiki-talk-temporal.txt,1140149,7833140,window_core,max core = 82,ok,201.64204097818583,716.625
+wiki-talk-temporal.txt,1140149,7833140,span_core,max core = 0,ok,1255.4619170259684,2000.234375
+wiki-talk-temporal.txt,1140149,7833140,dense_core,9352 nodes,ok,47870.58137496933,2114.765625
+wiki-talk-temporal.txt,1140149,7833140,stable_core,25767 cores,ok,4690.30733400723,2249.890625
+wiki-talk-temporal.txt,1140149,7833140,persistent_core,55915 nodes,ok,15477.826999966055,2258.546875
+sx-stackoverflow.txt,2601977,63497050,temporal_kcore,max core = 59838,ok,1718.2995000039227,2376.96875
+sx-stackoverflow.txt,2601977,63497050,static_kcore,max core = 198,ok,5714.906124980189,2284.375
+sx-stackoverflow.txt,2601977,63497050,kh_core,max core = 100,ok,4794.7779999813065,2413.984375
+sx-stackoverflow.txt,2601977,63497050,window_core,max core = 154,ok,3748.2367920456454,2456.6875
+sx-stackoverflow.txt,2601977,63497050,span_core,max core = 0,ok,31957.28724997025,2155.296875
+sx-stackoverflow.txt,0,0,dense_core,,timeout,300000,0
+sx-stackoverflow.txt,0,0,stable_core,,timeout,300000,0
+sx-stackoverflow.txt,2601977,63497050,persistent_core,883778 nodes,ok,62849.84387498116,2272.484375
