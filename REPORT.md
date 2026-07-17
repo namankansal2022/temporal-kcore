@@ -333,3 +333,94 @@ its own subprocess with a 300 s timeout and peak-memory measurement (see
 
 - *Span-core is consistently 0–1* across all five datasets, confirming that the
   intersection-based span-core is very restrictive on real interaction data.
+
+
+## 10. Scaling to tens of millions of temporal edges
+
+To evaluate scalability beyond the million-edge regime, the benchmark was
+extended to two substantially larger SNAP datasets:
+
+- **wiki-talk-temporal** (~7.8 million temporal edges)
+- **sx-stackoverflow** (~63.5 million temporal edges)
+
+The recursive (η,k)-pseudocore was intentionally excluded because Section 9 had
+already established that it consistently exceeds the 300-second timeout beyond
+approximately 332K edges.
+
+| Dataset | Edges | Algorithm | Result | Status | Time (ms) | Peak (MB) |
+|---|---:|---|---|---|---:|---:|
+| wiki-talk-temporal.txt | 7833140 | temporal_kcore | max core = 62900 | ok | 201 | 701 |
+| wiki-talk-temporal.txt | 7833140 | static_kcore | max core = 124 | ok | 446 | 814 |
+| wiki-talk-temporal.txt | 7833140 | kh_core | max core = 77 | ok | 374 | 784 |
+| wiki-talk-temporal.txt | 7833140 | window_core | max core = 82 | ok | 202 | 717 |
+| wiki-talk-temporal.txt | 7833140 | span_core | max core = 0 | ok | 1255 | 2000 |
+| wiki-talk-temporal.txt | 7833140 | dense_core | 9352 nodes | ok | 47871 | 2115 |
+| wiki-talk-temporal.txt | 7833140 | stable_core | 25767 cores | ok | 4690 | 2250 |
+| wiki-talk-temporal.txt | 7833140 | persistent_core | 55915 nodes | ok | 15478 | 2259 |
+| sx-stackoverflow.txt | 63497050 | temporal_kcore | max core = 59838 | ok | 1718 | 2377 |
+| sx-stackoverflow.txt | 63497050 | static_kcore | max core = 198 | ok | 5715 | 2284 |
+| sx-stackoverflow.txt | 63497050 | kh_core | max core = 100 | ok | 4795 | 2414 |
+| sx-stackoverflow.txt | 63497050 | window_core | max core = 154 | ok | 3748 | 2457 |
+| sx-stackoverflow.txt | 63497050 | span_core | max core = 0 | ok | 31957 | 2155 |
+| sx-stackoverflow.txt | - | dense_core | - | timeout | 300000 | - |
+| sx-stackoverflow.txt | - | stable_core | - | timeout | 300000 | - |
+| sx-stackoverflow.txt | 63497050 | persistent_core | 883778 nodes | ok | 62850 | 2272 |
+
+### Interpretation
+
+The larger-scale experiments reinforce the conclusions from Section 9 while
+showing where the practical scalability limits begin to appear.
+
+- **The peeling family scales exceptionally well.** Temporal-degree k-core,
+  static k-core, (k,h)-core and time-window k-core all continue to complete on
+  the 63.5-million-edge StackOverflow network in only a few seconds, confirming
+  their near-linear behaviour in practice.
+
+- **Span-core remains tractable.** Although substantially slower than the
+  peeling algorithms (about 32 seconds on StackOverflow), it still completes
+  within the timeout while consistently producing a maximum span-core of 0 on
+  these communication datasets, illustrating the restrictive nature of the
+  intersection-based formulation.
+
+- **Dense-core reaches its practical scalability limit.** It completes on the
+  7.8-million-edge WikiTalk dataset but exceeds the 300-second timeout on the
+  63.5-million-edge StackOverflow dataset.
+
+- **Stable-core shows similar behaviour.** It remains practical on WikiTalk but
+  also exceeds the timeout on StackOverflow, indicating that its structural
+  similarity computations become increasingly expensive at very large scales.
+
+- **Persistent-core continues to scale.** Although slower than the peeling
+  algorithms, it successfully completes even on the largest dataset (approximately
+  63 seconds), demonstrating substantially better scalability than dense-core
+  and stable-core.
+
+- **Temporal-degree and static coreness diverge even more strongly at scale.**
+  On StackOverflow the temporal-degree maximum core reaches 59,838 whereas the
+  static maximum core is only 198. This confirms that repeated temporal
+  interactions dominate temporal-degree measures while static cores capture only
+  the diversity of neighbours.
+
+### Overall scalability conclusion
+
+Across all experiments, the benchmark now spans datasets from roughly **60
+thousand** temporal edges to more than **63 million** temporal edges.
+
+The empirical results show three distinct scalability regimes:
+
+1. **Highly scalable algorithms:** temporal-degree k-core, static k-core,
+   (k,h)-core, time-window k-core, span-core and persistent-core successfully
+   process datasets containing tens of millions of temporal edges.
+
+2. **Moderately scalable algorithms:** (l,δ)-dense and (µ,τ,ε)-stable remain
+   practical up to several million temporal edges but exceed the five-minute
+   timeout on the largest StackOverflow dataset.
+
+3. **Least scalable algorithm:** the recursive (η,k)-pseudocore exceeds the
+   timeout once datasets reach a few hundred thousand temporal edges, confirming
+   that a streaming implementation would be required for large-scale networks.
+
+These experiments complete the scalability evaluation requested for the project
+and provide a comprehensive comparison of runtime and memory behaviour across
+multiple temporal k-core formulations.
+
