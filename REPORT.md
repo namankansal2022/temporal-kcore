@@ -62,20 +62,20 @@ survey variants in between.
 
 ## 2. What I implemented (this week's TODOs)
 
-### TODO 1 — C++ environment, Python bindings, CMake ✅
+### TODO 1 — C++ environment, Python bindings, CMake 
 CMake project producing four artifacts: a `tkcore` static library, a
 `tkcore_benchmark` CLI, a `test_kcore` test binary, and a `pytkcore` Python
 module via **pybind11**. The Python module is optional (skipped gracefully if
 pybind11 is absent). Release build uses `-O3`.
 
-### TODO 2 — Loader + basic statistics ✅
+### TODO 2 — Loader + basic statistics 
 A fast buffered reader for SNAP-style `src dst timestamp` edge lists (comments
 skipped; also accepts 2-column static lists). External node ids are interned to
 a contiguous `[0, n)` range for cache-friendly flat arrays. Statistics reported:
 number of nodes, temporal edges, distinct **static** edges `{u,v}`, distinct
 timestamps, time span, and average / maximum temporal degree.
 
-### TODO 3 — Linear-time k-core with temporal degree ✅
+### TODO 3 — Linear-time k-core with temporal degree 
 Batagelj–Zaveršnik bin-sort peeling in `O(|V| + |E|)`. The **temporal degree**
 of a node is the number of temporal edges incident to it: I build per-node
 incidence lists in which a neighbour reached by *m* parallel temporal edges
