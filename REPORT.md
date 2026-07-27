@@ -428,7 +428,7 @@ multiple temporal k-core formulations.
 
 ---
 
-# 11. Temporal Resolution Benchmark
+## 11. Temporal Resolution Benchmark
 
 To evaluate the impact of temporal granularity, the snapshot-based algorithms
 were benchmarked using multiple temporal aggregation intervals on the
@@ -448,7 +448,7 @@ For each resolution, the benchmark recorded:
 - Peak memory usage
 - Number of generated snapshots
 
-## Key Observations
+### 11.1 Key Observations
 
 - Finer temporal resolutions generate significantly more snapshots, increasing
   computational cost.
