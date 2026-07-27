@@ -1,8 +1,26 @@
+# Spearman rank correlation (coreness methods)
+,temporal-degree,static,"(k,h) h=2",pseudocore
+temporal-degree,1.000,0.957,0.963,0.971
+static,0.957,1.000,0.924,0.944
+"(k,h) h=2",0.963,0.924,1.000,0.938
+pseudocore,0.971,0.944,0.938,1.000
+
+# Jaccard index (all methods)
 ,temporal-degree (top100),static (top100),"(k,h) h=2 (top100)",pseudocore (top100),"(l,d)-dense set","(t,t)-persistent set","(m,t,e)-stable set"
-temporal-degree (top100),1.000,0.410,0.420,0.570,0.970,1.000,1.000
-static (top100),0.410,1.000,0.880,0.570,0.940,1.000,0.990
-"(k,h) h=2 (top100)",0.420,0.880,1.000,0.630,0.980,1.000,1.000
-pseudocore (top100),0.570,0.570,0.630,1.000,0.940,1.000,1.000
-"(l,d)-dense set",0.970,0.940,0.980,0.940,1.000,0.970,0.983
-"(t,t)-persistent set",1.000,1.000,1.000,1.000,0.970,1.000,0.918
-"(m,t,e)-stable set",1.000,0.990,1.000,1.000,0.983,0.918,1.000
+temporal-degree (top100),1.000,0.258,0.266,0.399,0.240,0.114,0.084
+static (top100),0.258,1.000,0.786,0.399,0.231,0.114,0.083
+"(k,h) h=2 (top100)",0.266,0.786,1.000,0.460,0.243,0.114,0.084
+pseudocore (top100),0.399,0.399,0.460,1.000,0.231,0.114,0.084
+"(l,d)-dense set",0.240,0.231,0.243,0.231,1.000,0.437,0.330
+"(t,t)-persistent set",0.114,0.114,0.114,0.114,0.437,1.000,0.641
+"(m,t,e)-stable set",0.084,0.083,0.084,0.084,0.330,0.641,1.000
+
+"# Overlap coefficient (all methods) -- '*' = size-inflated, see .md"
+,temporal-degree (top100),static (top100),"(k,h) h=2 (top100)",pseudocore (top100),"(l,d)-dense set","(t,t)-persistent set","(m,t,e)-stable set"
+temporal-degree (top100),1.000,0.410,0.420,0.570,0.970*,1.000*,1.000*
+static (top100),0.410,1.000,0.880,0.570,0.940*,1.000*,0.990*
+"(k,h) h=2 (top100)",0.420,0.880,1.000,0.630,0.980*,1.000*,1.000*
+pseudocore (top100),0.570,0.570,0.630,1.000,0.940*,1.000*,1.000*
+"(l,d)-dense set",0.970*,0.940*,0.980*,0.940*,1.000,0.970,0.983
+"(t,t)-persistent set",1.000*,1.000*,1.000*,1.000*,0.970,1.000,0.918
+"(m,t,e)-stable set",1.000*,0.990*,1.000*,1.000*,0.983,0.918,1.000
