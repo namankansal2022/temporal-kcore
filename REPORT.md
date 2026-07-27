@@ -477,15 +477,38 @@ structures.
 ## 12. Structural analysis: agreement between algorithms
 
 Beyond performance, this analyses *how the algorithmic choice changes the
-structural insight* obtained from the same network. On CollegeMsg, each method's
-selected nodes (top-K by coreness for the coreness methods; the returned set for
-the cohesive-group methods) are compared pairwise using the overlap coefficient
-|A&cap;B|/min(|A|,|B|). The full matrix, per-method set sizes, and data-driven
-findings are in `STRUCTURAL_ANALYSIS.md`; the agreement heatmap is below.
+structural insight* obtained from the same network. On CollegeMsg the seven
+decompositions are compared with three complementary measures, because no single
+measure is honest on its own:
+
+1. **Spearman rank correlation** (coreness methods). The four coreness methods
+   assign a numeric importance score to *every* node, so their full orderings are
+   compared directly, independent of any top-K cutoff or set-size difference.
+   This is the primary measure of whether two definitions agree on *importance*.
+2. **Jaccard index** |A&cap;B|/|A&cup;B| over the reported node sets (top-K for
+   coreness methods, returned sets for the cohesive-group methods). Being
+   size-penalised, it does not saturate to 1.0 when a small set merely sits
+   inside a large one.
+3. **Overlap coefficient** |A&cap;B|/min(|A|,|B|) is reported only for
+   completeness, with an explicit caveat: it inflates to ~1.0 whenever a small
+   set is nearly a subset of a much larger one (e.g. a top-100 coreness set
+   against the 800-1200-node persistent/stable sets), so those cells reflect set
+   size rather than genuine agreement and are flagged in the CSV. Relying on it
+   alone, as an earlier version of this analysis did, overstates agreement.
+
+The full matrices, per-method set sizes, and data-driven findings are in
+`STRUCTURAL_ANALYSIS.md`; the Spearman (coreness) and Jaccard (all methods)
+heatmaps are below.
 
 ![Structural agreement heatmap](figures/structural_overlap.png)
 
 The key point: methods that count repeated interaction, distinct partners,
 temporal persistence, or reachability identify *overlapping but distinct* groups
-from the same data — so the choice of algorithm materially changes which nodes
-are deemed structurally important, not just how fast the computation runs.
+from the same data. Crucially, two definitions can correlate strongly on the
+overall ranking (high Spearman) yet still disagree sharply on *which specific
+nodes top the list* (low top-K Jaccard): the divergence is concentrated at the
+high-importance hubs. So the choice of algorithm materially changes which nodes
+are deemed structurally important, not just how fast the computation runs, and a
+robust consensus core (nodes flagged by at least 5 of 7 methods) persists
+underneath.
+
