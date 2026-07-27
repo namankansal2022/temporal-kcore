@@ -473,3 +473,19 @@ Overall, these experiments demonstrate that temporal resolution is an important
 parameter affecting both efficiency and the quality of the extracted temporal
 structures.
 
+
+## 12. Structural analysis: agreement between algorithms
+
+Beyond performance, this analyses *how the algorithmic choice changes the
+structural insight* obtained from the same network. On CollegeMsg, each method's
+selected nodes (top-K by coreness for the coreness methods; the returned set for
+the cohesive-group methods) are compared pairwise using the overlap coefficient
+|A&cap;B|/min(|A|,|B|). The full matrix, per-method set sizes, and data-driven
+findings are in `STRUCTURAL_ANALYSIS.md`; the agreement heatmap is below.
+
+![Structural agreement heatmap](figures/structural_overlap.png)
+
+The key point: methods that count repeated interaction, distinct partners,
+temporal persistence, or reachability identify *overlapping but distinct* groups
+from the same data — so the choice of algorithm materially changes which nodes
+are deemed structurally important, not just how fast the computation runs.
